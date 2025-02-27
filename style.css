@@ -1,4 +1,6 @@
 button {
+    aspect-ratio: 1/1; 
+    width: 100%; 
     font-size: 18px;
     font-weight: bold;
     padding: 10px 20px;
@@ -46,4 +48,12 @@ button:disabled {
     border: 5px solid #e4f4fc; 
     border-radius: 10px; 
     margin-bottom: 20px; 
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 kolumny o równej szerokości */
+    gap: 15px; /* Odstęp między kafelkami */
+    width: 30%;
+    margin: 20px auto;
 }
