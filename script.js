@@ -4,6 +4,9 @@ const array = [];
 const numBars = 64;
 const barWidth = canvas.width / numBars;
 
+let sortingInProgress = false;
+let stopSorting = false;
+
 for(let i = 0; i < numBars; i++){
     array.push(Math.floor(Math.random() * canvas.height));
 }
@@ -19,23 +22,47 @@ function drawArray(arr, indx){
     }
 }
 
-async function bubbleSort(){
+async function bubbleSort() {
     let len = array.length;
-    for(let i = 0; i < len; i++){
-        for(let j = 0; j < len - i - 1; j++) {
-            if(array[j] > array[j + 1]){
-                [array[j], array[j + 1]] = [array[j + 1], array[j]];
+    sortingInProgress = true;
+    stopSorting = false;
 
-                drawArray(array, j+1);
+    document.getElementById("startButton").disabled = true; 
+    document.getElementById("stopButton").disabled = false; 
+
+    for(let i = 0; i < len; i++) {
+        for(let j = 0; j < len - i - 1; j++) {
+            if (stopSorting) { 
+                sortingInProgress = false;
+                document.getElementById("startButton").disabled = false; 
+                return;
+            }
+
+            if(array[j] > array[j + 1]) {
+                [array[j], array[j + 1]] = [array[j + 1], array[j]];
+                drawArray(array, j + 1);
                 await new Promise(resolve => setTimeout(resolve, 50));
             }
         }
     }
+
+    sortingInProgress = false;
+    document.getElementById("startButton").disabled = false; 
 }
 
 function startSorting() {
-    bubbleSort();
+    if(!sortingInProgress) {
+        bubbleSort();
+    }
 }
 
+function stopSortingFunction() {
+    if(sortingInProgress) {
+        stopSorting = true; 
+        document.getElementById("startButton").disabled = false; 
+    }
+}
+
+document.getElementById("stopButton").addEventListener("click", stopSortingFunction);
 drawArray(array);
 
