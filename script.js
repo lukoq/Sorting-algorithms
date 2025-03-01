@@ -50,19 +50,92 @@ async function bubbleSort() {
     document.getElementById("startButton").disabled = false; 
 }
 
-function startSorting() {
-    if(!sortingInProgress) {
-        bubbleSort();
+
+async function selectionSort() {
+    let len = array.length;
+    sortingInProgress = true;
+    stopSorting = false;
+
+    document.getElementById("startButton").disabled = true;
+    document.getElementById("stopButton").disabled = false;
+
+    for(let i = 0; i < len - 1; i++) {
+        let minIndex = i;
+
+        for(let j = i + 1; j < len; j++) {
+            if(stopSorting) { 
+                sortingInProgress = false;
+                document.getElementById("startButton").disabled = false;
+                return;
+            }
+
+            if(array[j] < array[minIndex]) {
+                minIndex = j;
+            }
+        }
+
+        if(minIndex !== i) {
+            [array[i], array[minIndex]] = [array[minIndex], array[i]];
+            drawArray(array, i);
+            await new Promise(resolve => setTimeout(resolve, 50));
+        }
     }
+
+    sortingInProgress = false;
+    document.getElementById("startButton").disabled = false;
 }
 
-function stopSortingFunction() {
+async function insertionSort() {
+    let len = array.length;
+    sortingInProgress = true;
+    stopSorting = false;
+
+    document.getElementById("startButton").disabled = true;
+    document.getElementById("stopButton").disabled = false;
+
+    for(let i = 1; i < len; i++) {
+        let key = array[i];
+        let j = i - 1;
+
+        while(j >= 0 && array[j] > key) {
+            if (stopSorting) { 
+                sortingInProgress = false;
+                document.getElementById("startButton").disabled = false;
+                return;
+            }
+
+            array[j + 1] = array[j];
+            j--;
+
+            drawArray(array, j + 1);
+            await new Promise(resolve => setTimeout(resolve, 50));
+        }
+
+        array[j + 1] = key;
+        drawArray(array, i);
+        await new Promise(resolve => setTimeout(resolve, 50));
+    }
+
+    sortingInProgress = false;
+    document.getElementById("startButton").disabled = false;
+}
+
+
+
+
+function stopSortingFun() {
     if(sortingInProgress) {
         stopSorting = true; 
         document.getElementById("startButton").disabled = false; 
     }
 }
 
-document.getElementById("stopButton").addEventListener("click", stopSortingFunction);
+function getBack() {
+    window.location.href = "index.html";
+}
+
+
+
+document.getElementById("stopButton").addEventListener("click", stopSortingFun);
 drawArray(array);
 

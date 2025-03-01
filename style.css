@@ -28,6 +28,21 @@ button:disabled {
     opacity: 0.7;
 }
 
+#backButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #e74c3c;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#backButton:hover {
+    background-color: #c0392b;
+}
+
 #container {
     display: flex;
     flex-direction: column;
@@ -52,8 +67,8 @@ button:disabled {
 
 .menu {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 kolumny o równej szerokości */
-    gap: 15px; /* Odstęp między kafelkami */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 15px;
     width: 30%;
-    margin: 20px auto;
+    margin: 64px auto;
 }
