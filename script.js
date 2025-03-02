@@ -119,14 +119,63 @@ async function insertionSort() {
     sortingInProgress = false;
     document.getElementById("startButton").disabled = false;
 }
+async function heapSort() {
+    let len = array.length;
+    sortingInProgress = true;
+    stopSorting = false;
 
+    document.getElementById("startButton").disabled = true;
+    document.getElementById("stopButton").disabled = false;
+
+    for(let i = Math.floor(len / 2) - 1; i >= 0; i--) {
+        if(stopSorting) break;
+        await heapify(len, i);
+    }
+
+    for(let i = len - 1; i > 0; i--) {
+        if (stopSorting) break;
+
+        [array[0], array[i]] = [array[i], array[0]];
+        drawArray(array, i);  
+        await new Promise(resolve => setTimeout(resolve, 50));
+
+        await heapify(i, 0);
+    }
+
+    sortingInProgress = false;
+    document.getElementById("startButton").disabled = false;
+}
+
+async function heapify(n, i) {
+    let largest = i;
+    let left = 2 * i + 1;
+    let right = 2 * i + 2;
+
+    if(left < n && array[left] > array[largest]) {
+        largest = left;
+    }
+
+    if(right < n && array[right] > array[largest]) {
+        largest = right;
+    }
+
+    if(largest !== i) {
+        [array[i], array[largest]] = [array[largest], array[i]];
+        drawArray(array, largest);
+        await new Promise(resolve => setTimeout(resolve, 50));
+
+        await heapify(n, largest);
+    }
+}
 
 
 
 function stopSortingFun() {
-    if(sortingInProgress) {
-        stopSorting = true; 
-        document.getElementById("startButton").disabled = false; 
+    if (sortingInProgress) { 
+        stopSorting = true;  
+        sortingInProgress = false; 
+        document.getElementById("startButton").disabled = false;  
+        document.getElementById("stopButton").disabled = true;  
     }
 }
 
