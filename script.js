@@ -168,6 +168,63 @@ async function heapify(n, i) {
     }
 }
 
+async function countingSort() {
+    let max = Math.max(...array);
+    let min = Math.min(...array); 
+    let range = max - min + 1; 
+
+    let count = new Array(range).fill(0); 
+    let output = new Array(array.length); 
+
+    sortingInProgress = true;
+    stopSorting = false;
+    document.getElementById("startButton").disabled = true;
+    document.getElementById("stopButton").disabled = false;
+
+    for(let i = 0; i < array.length; i++) {
+        if(stopSorting) 
+            return stopSort();
+        count[array[i] - min]++;
+        drawArray(array, i);
+        await new Promise(resolve => setTimeout(resolve, 50));
+    }
+
+    for(let i = 1; i < count.length; i++) {
+        if(stopSorting) 
+            return stopSort();
+        count[i] += count[i - 1];
+        drawArray(array, i);
+        await new Promise(resolve => setTimeout(resolve, 50));
+    }
+
+    for(let i = array.length - 1; i >= 0; i--) {
+        if(stopSorting) 
+            return stopSort();
+        let index = count[array[i] - min] - 1;
+        output[index] = array[i];
+        count[array[i] - min]--;
+        drawArray(output, index);
+        await new Promise(resolve => setTimeout(resolve, 50));
+    }
+
+    for(let i = 0; i < array.length; i++) {
+        if(stopSorting) 
+            return stopSort();
+        array[i] = output[i];
+        drawArray(array, i);
+        await new Promise(resolve => setTimeout(resolve, 50));
+    }
+
+    stopSort();
+}
+
+function stopSort() {
+    sortingInProgress = false;
+    document.getElementById("startButton").disabled = false;
+    document.getElementById("stopButton").disabled = true;
+}
+
+
 
 
 function stopSortingFun() {
